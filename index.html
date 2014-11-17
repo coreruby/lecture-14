@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Singleton Classes</title>
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="css/reveal.css" rel="stylesheet" />
+    <link href="css/simple.css" rel="stylesheet" />
+    <link href="css/googlecode.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section class="center" data-background="#000">
+  <h2 class="white">
+    Singleton Classes
+  </h2>
+</section>
+<section class="center">
+  <p>
+    You know the <a href="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton pattern</a>?
+  </p>
+</section>
+<section class="center">
+  <p>
+    Good, cause we ain't gonna talk about it.
+  </p>
+</section>
+<section data-background="http://media.giphy.com/media/U7l2ANkN9gl9e/giphy.gif"></section>
+<section class="center" data-background="#000">
+  <h2 class="white">
+    Questions
+  </h2>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">def element(**attributes)
+  attributes
+end </code></pre>
+</section>
+<section class="center">
+  <p>
+    What is a scope gate?
+  </p>
+</section>
+<section class="center">
+  <p>
+    Which are the keywords that introduce scope gates?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What is a module?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What is a class?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What does the instance variables API let us do?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What does the class variables API let us do?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What does the constants API let us do?
+  </p>
+</section>
+<section class="center">
+  <p>
+    Where are instance variables stored?
+  </p>
+</section>
+<section class="center">
+  <p>
+    Where are methods stored?
+  </p>
+</section>
+<section class="center" data-background="#F00">
+  <h2 class="white">
+    Singleton Classes
+  </h2>
+</section>
+<section class="center">
+  <p>
+    Where are methods stored?
+  </p>
+</section>
+<section class="center">
+  <p>
+    Modules, right?
+  </p>
+</section>
+<section class="center">
+  <p>
+    What if I tell you that you can have methods specific to a single instance?
+  </p>
+</section>
+<section data-background="http://replygif.net/i/752.gif"></section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    Every* Ruby object can have yet another class associated with it
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    The sole purpose of this class is to provide behaviour specific to that object
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    Those classes aren't created until the first time you open them
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    They aren't listed in the ancestors chain
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    Whenever you call a method, Ruby tries to find it first in the singleton class, if it exists
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    Symbols and numbers can't have them for performance reasons
+  </p>
+</section>
+<section>
+  <h2>
+    Singleton Class
+  </h2>
+  <p>
+    nil, true and false have NilClass, TrueClass and FalseClass for singleton classes
+  </p>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">unique_object = Object.new </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">def unique_object.unique_method
+  42
+end </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">class << unique_object
+  def unique_method
+    42
+  end
+end </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">unique_object.unique_method #=> 42
+Object.new.unique_method    #=> NoMethodError </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">pi = 3.14     # 3.14
+def f.f() end #=> TypeError: can't define singleton </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">result = class MyClass
+  self
+end
+
+#=> MyClass </code></pre>
+</section>
+<section class="center">
+  <p>
+    How do you define class methods in Ruby?
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    Ruby doesn't really have class methods
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    The class methods are actually instance methods on the singleton class associated with the class instance
+  </p>
+</section>
+<section data-background="http://replygif.net/i/411.gif"></section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">class MyClass
+  class << self
+    def this_is_a_class_method() end
+    def so_is_this_one() end
+
+    private
+
+    def this_is_a_private_class_method() end
+  end
+end </code></pre>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">class MyClass
+  def self.this_is_a_class_method() end
+  def self.so_is_this_one() end
+
+  private
+
+  def self.this_isnt_a_private_class_method() end
+end </code></pre>
+</section>
+<section class="center">
+  <img class="inline" src="img/troll.png" />
+</section>
+<section>
+  <h2>
+    Object#singleton_class
+  </h2>
+  <p>
+    Returns the singleton class of obj
+  </p>
+</section>
+<section>
+  <h2>
+    Object#singleton_class
+  </h2>
+  <p>
+    This method creates a new singleton class if obj does not have it
+  </p>
+</section>
+<section>
+  <h2>
+    Object#singleton_class
+  </h2>
+  <p>
+    If object is nil, true, or false, returns NilClass, TrueClass, or FalseClass, respectively
+  </p>
+</section>
+<section>
+  <h2>
+    Object#singleton_class
+  </h2>
+  <p>
+    If obj is a Fixnum or a Symbol, it raises a TypeError
+  </p>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">Object.new.singleton_class  #=> #<Class:#<Object:0xb7ce1e24>>
+String.singleton_class      #=> #<Class:String>
+nil.singleton_class         #=> NilClass </code></pre>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    What is the current object in Ruby?
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    What if I tell you that there is always a current class too?
+  </p>
+</section>
+<section data-background="http://replygif.net/i/537.gif"></section>
+<section class="center" data-background="#000">
+  <p class="white">
+    What if I tell you that you can't programmatically access it?
+  </p>
+</section>
+<section data-background="http://replygif.net/i/541.gif"></section>
+<section>
+  <h2>
+    Current Class
+  </h2>
+  <p>
+    At the top level of your program, the current class is Object, the class of main
+  </p>
+</section>
+<section>
+  <h2>
+    Current Class
+  </h2>
+  <p>
+    That’s why, if you define a method at the top level, that method becomes an instance method of Object
+  </p>
+</section>
+<section>
+  <h2>
+    Current Class
+  </h2>
+  <p>
+    In a method, the current class is the class of the current object.
+  </p>
+</section>
+<section>
+  <h2>
+    Current Class
+  </h2>
+  <p>
+    Try defining a method inside another method with def, and you’ll see that the new method is defined on the class of self
+  </p>
+</section>
+<section>
+  <h2>
+    Current Class
+  </h2>
+  <p>
+    When you open a class with the class keyword (or a module with the module keyword), that class becomes the current class
+  </p>
+</section>
+<section>
+  <h2>
+    BasicObject#instance_eval
+  </h2>
+  <p>
+    Evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj)
+  </p>
+</section>
+<section>
+  <h2>
+    BasicObject#instance_eval
+  </h2>
+  <p>
+    In order to set the context, the variable self is set to obj while the code is executing, giving the code access to obj’s instance variables
+  </p>
+</section>
+<section>
+  <h2>
+    BasicObject#instance_eval
+  </h2>
+  <p>
+    In the version of instance_eval that takes a String, the optional second and third parameters supply a filename and starting line number that are used when reporting compilation errors
+  </p>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">class Secret
+  def initialize
+    @secret = 99
+  end
+end
+
+shh = Secret.new
+shh.instance_eval { @secret } #=> 99 </code></pre>
+</section>
+<section>
+  <h2>
+    Module#class_eval
+  </h2>
+  <p>
+    Evaluates the string or block in the context of mod, except that when a block is given, constant/class variable lookup is not affected.
+  </p>
+</section>
+<section>
+  <h2>
+    Module#class_eval
+  </h2>
+  <p>
+    This can be used to add methods to a class.
+  </p>
+</section>
+<section>
+  <h2>
+    Module#class_eval
+  </h2>
+  <p>
+    Returns the result of evaluating its argument.
+  </p>
+</section>
+<section>
+  <h2>
+    Module#class_eval
+  </h2>
+  <p>
+    The optional filename and lineno parameters set the text for error messages.
+  </p>
+</section>
+<section class="center">
+  <pre><code class="ruby" contenteditable="true">Thing = Class.new
+
+Thing.class_eval do
+  def hello() "Hello there!" end
+end
+
+puts Thing.new.hello() </code></pre>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    Okay, so what's the difference?
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    instance_eval sets the current class to the singleton class of the receiver
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    class_eval sets the current class to its receiver
+  </p>
+</section>
+<section class="center" data-background="#000">
+  <p class="white">
+    class_eval is like reopening a class
+  </p>
+</section>
+<section class="center" data-background="#0F0">
+  <h2 class="white">
+    Metaprogramming
+  </h2>
+</section>
+<section class="center">
+  <p class="white">
+    Code that writes code
+  </p>
+</section>
+<section class="center">
+  <p class="white">
+    Code that manipulates language constructs at runtime
+  </p>
+</section>
+      </div>
+    </div>
+    <script src="js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script type="text/javascript">
+      Reveal.initialize({
+        width:  '100%',
+        height: '100%',
+        margin: 0.05,
+        controls: false,
+        progress: false,
+        history: true,
+        center: false,
+        rollingLinks: true,
+        transition: 'none',
+        backgroundTransition: 'none',
+        dependencies: [
+          {
+            src: 'js/highlight.js',
+            async: true,
+            callback: function() {
+              hljs.configure({ languages: ['ruby'] });
+              hljs.initHighlightingOnLoad();
+            }
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>
